@@ -16,7 +16,7 @@ with engine.connect() as con:
     df_products = pd.read_sql_query("SELECT * FROM products", con)
 
 # separa os dados em features e target
-X = df_products.drop("name", axis=1)
+X = df_products.drop(columns=["id", "name"])
 y = df_products["name"]
 
 # cria os conjuntos de treino e teste
@@ -41,6 +41,8 @@ X_test["packing"] = le_packing.transform(X_test["packing"])
 y_train = le_name.transform(y_train)
 y_test = le_name.transform(y_test)
 
+
+print(X_train)
 # Treina o modelo
 model = DecisionTreeClassifier(random_state=1)
 model.fit(X_train, y_train)
@@ -50,7 +52,7 @@ predictions = model.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, predictions))
 print(classification_report(y_test, predictions))
 
-# salvando os objetos de codificação
+# # salvando os objetos de codificação
 joblib.dump(le_name, open(os.path.join(ARTIFACTS_DIR, "le_name.pkl"), "wb"))
 joblib.dump(le_packing, open(os.path.join(ARTIFACTS_DIR, "le_packing.pkl"), "wb"))
 joblib.dump(model, open(os.path.join(ARTIFACTS_DIR, "model.pkl"), "wb"))
