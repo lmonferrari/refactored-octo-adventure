@@ -41,8 +41,6 @@ X_test["packing"] = le_packing.transform(X_test["packing"])
 y_train = le_name.transform(y_train)
 y_test = le_name.transform(y_test)
 
-
-print(X_train)
 # Treina o modelo
 model = DecisionTreeClassifier(random_state=1)
 model.fit(X_train, y_train)
